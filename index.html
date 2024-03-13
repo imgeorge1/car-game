@@ -18,7 +18,14 @@
       var config = {
         type: Phaser.AUTO,
         width: 600,
-        height: 800,
+        height: 750,
+        physics: {
+          default: "arcade",
+          arcade: {
+            gravity: { y: 200 },
+            debug: false,
+          },
+        },
         scene: {
           preload: preload,
           create: create,
@@ -26,19 +33,55 @@
         },
       };
 
+      //variables
+      var player;
+      var cursors;
+      var enemy;
+      var score = 0;
+      var scoreText;
       var game = new Phaser.Game(config);
 
+      //main functions
       function preload() {
         this.load.image("road", "assets/road.png");
         this.load.image("zhiguli", "assets/zhiguli.png");
       }
 
       function create() {
+        //road
         this.add.image(300, 400, "road");
-        this.add.image(300, 500, "zhiguli").setScale(1);
+        //player
+        this.player = this.physics.add.image(300, 500, "zhiguli");
+        //player settings
+        this.player.setCollideWorldBounds(true);
+        //input
+        cursors = this.input.keyboard.createCursorKeys();
       }
 
-      function update() {}
+      function update() {
+        //move left and right
+        if (cursors.left.isDown) {
+          //go left
+          this.player.setVelocityX(-250);
+        } else if (cursors.right.isDown) {
+          //go right
+          this.player.setVelocityX(250);
+        } else {
+          //do nothing
+          this.player.setVelocityX(0);
+        }
+        //move up and down
+        if (cursors.up.isDown) {
+          //go up
+          this.player.setVelocityY(-250);
+        } else if (cursors.down.isDown) {
+          //go down
+          this.player.setVelocityY(250);
+        } else {
+          //do nothing
+          this.player.setVelocityY(0);
+        }
+      }
     </script>
   </body>
 </html>
