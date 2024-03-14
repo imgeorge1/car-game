@@ -77,12 +77,15 @@
         } else {
           //do nothing
           this.player.setVelocityX(0);
-          this.player.setVelocityY(0);
         }
 
         if (cursors.up.isDown) {
           //go up
-          this.player.setVelocityY(-20);
+          this.player.setVelocityY(-100);
+        } else if (cursors.down.isDown) {
+          this.player.setVelocityY(100);
+        } else {
+          this.player.setVelocityY(0);
         }
       }
     </script>
