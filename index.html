@@ -41,12 +41,17 @@
       let scoreText;
       let game = new Phaser.Game(config);
       let details;
+      // let carsList;
+      let bigcarsList;
+      // let smallcarsList;
+      let intervalFunction;
 
       //main functions
       function preload() {
         this.load.image("road", "assets/road.png");
         this.load.image("roadDetails", "assets/road_details.png");
-        this.load.image("zhiguli", "assets/zhiguli.png");
+        this.load.image("zhiguli", "assets/old_green_car.png");
+        this.load.image("trailer", "assets/trailer.png");
       }
 
       function create() {
@@ -54,6 +59,31 @@
         this.add.image(300, 400, "road");
         //v creates a tileSprite
         this.details = this.add.tileSprite(300, 375, 600, 750, "roadDetails");
+        //enemies
+        enemy = this.physics.add.group();
+        bigcarsList = ["trailer"];
+        // smallcarsList = ["zhiguli"];
+        //enemy spawner
+        function intervalFunction() {
+          setInterval(function () {
+            enemy.create(
+              Phaser.Math.RND.between(400, 550),
+              -500,
+              Phaser.Math.RND.pick(bigcarsList)
+            );
+            // enemy.create(
+            //   Phaser.Math.RND.between(100, 350),
+            //   -500,
+            //   Phaser.Math.RND.pick(smallcarsList)
+            // );
+            // if (Phaser.Math.RND.pick(fallingItems) === "ball") {
+            //   score += 10;
+            // }
+            // score += 1;
+            // scoreText.setText("Score: " + score);
+          }, 1000);
+        }
+        intervalFunction();
         //player
         this.player = this.physics.add.image(300, 500, "zhiguli");
         //player settings
@@ -64,7 +94,7 @@
 
       function update() {
         //v animates the tileSprite
-        this.details.tilePositionY -= 2;
+        this.details.tilePositionY -= 3;
         //move left and right
         if (cursors.left.isDown) {
           //go left
@@ -86,6 +116,13 @@
           this.player.setVelocityY(100);
         } else {
           this.player.setVelocityY(0);
+        }
+
+        if (cursors.up.isDown && cursors.down.isDown) {
+          this.player.rotation -= 0.2;
+          this.player.setVelocityY(0);
+        } else {
+          this.player.rotation = 0;
         }
       }
     </script>
