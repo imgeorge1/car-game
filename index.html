@@ -50,7 +50,7 @@
       function preload() {
         this.load.image("road", "assets/road.png");
         this.load.image("roadDetails", "assets/road_details.png");
-        this.load.image("zhiguli", "assets/sedans/vwbug.png");
+        this.load.image("player", "assets/player_car.png");
         this.load.image("trailer", "assets/trucks/CAR1_44.png");
       }
 
@@ -85,7 +85,7 @@
         }
         intervalFunction();
         //player
-        this.player = this.physics.add.image(300, 500, "zhiguli");
+        this.player = this.physics.add.image(300, 500, "player");
         //player settings
         this.player.setCollideWorldBounds(true);
         //input
