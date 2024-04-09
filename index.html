@@ -42,8 +42,10 @@
       let game = new Phaser.Game(config);
       let details;
       // let carsList;
-      let bigcarsList;
-      // let smallcarsList;
+      let trucks;
+      let sedans;
+      let compacts;
+      let supercars;
       let intervalFunction;
 
       //main functions
@@ -51,7 +53,30 @@
         this.load.image("road", "assets/road.png");
         this.load.image("roadDetails", "assets/road_details.png");
         this.load.image("player", "assets/player_car.png");
-        this.load.image("trailer", "assets/trucks/CAR1_44.png");
+        //trucks
+        this.load.image("blue-truck", "assets/trucks/blue_truck.png");
+        this.load.image("dark-truck", "assets/trucks/dark_truck.png");
+        this.load.image("limo", "assets/trucks/limo.png");
+        this.load.image("red-truck", "assets/trucks/red_truck.png");
+        this.load.image("yellow-truck", "assets/trucks/yellow_truck.png");
+        //sedans
+        this.load.image("blue-sedan", "assets/sedans/blue_sedan.png");
+        this.load.image("old-sedan", "assets/sedans/old_sedan.png");
+        this.load.image("red-sedan", "assets/sedans/red_sedan.png");
+        this.load.image("taxi", "assets/sedans/taxi.png");
+        this.load.image("white-sedan", "assets/sedans/white_sedan.png");
+        //supercars
+        this.load.image("blue-super", "assets/supercars/blue_super.png");
+        this.load.image("purple-super", "assets/supercars/purple_super.png");
+        this.load.image("red-super", "assets/supercars/red_super.png");
+        this.load.image("stripe-super", "assets/supercars/stripe_super.png");
+        this.load.image("white-super", "assets/supercars/white_super.png");
+        this.load.image("yellow-super", "assets/supercars/yellow_super.png");
+        //compacts
+        this.load.image("blue-compact", "assets/compacts/blue_compact.png");
+        this.load.image("green-compact", "assets/compacts/green_compact.png");
+        this.load.image("violet-compact", "assets/compacts/violet_compact.png");
+        this.load.image("yellow-compact", "assets/compacts/yellow_compact.png");
       }
 
       function create() {
@@ -61,15 +86,43 @@
         this.details = this.add.tileSprite(300, 375, 600, 750, "roadDetails");
         //enemies
         enemy = this.physics.add.group();
-        bigcarsList = ["trailer"];
+        trucks = [
+          "blue-truck",
+          "dark-truck",
+          "limo",
+          "red-truck",
+          "yellow-truck",
+        ];
+        sedans = [
+          "blue-sedan",
+          "old-sedan",
+          "red-sedan",
+          "taxi",
+          "white-sedan",
+        ];
+        supercars = [
+          "blue-super",
+          "purple-super",
+          "red-super",
+          "stripe-super",
+          "white-super",
+          "yellow-super",
+        ];
+        compacts = [
+          "blue-compact",
+          "green-compact",
+          "violet-compact",
+          "yellow-compact",
+        ];
+
         // smallcarsList = ["zhiguli"];
         //enemy spawner
         function intervalFunction() {
           setInterval(function () {
             enemy.create(
-              Phaser.Math.RND.between(400, 550),
+              Phaser.Math.RND.between(10, 590),
               -500,
-              Phaser.Math.RND.pick(bigcarsList)
+              Phaser.Math.RND.pick(trucks)
             );
             // enemy.create(
             //   Phaser.Math.RND.between(100, 350),
@@ -81,7 +134,15 @@
             // }
             // score += 1;
             // scoreText.setText("Score: " + score);
-          }, 1000);
+          }, 2000);
+
+          setInterval(function () {
+            enemy.create(
+              Phaser.Math.RND.between(10, 590),
+              -500,
+              Phaser.Math.RND.pick(sedans)
+            );
+          }, 900);
         }
         intervalFunction();
         //player
