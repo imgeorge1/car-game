@@ -22,7 +22,7 @@
         physics: {
           default: "arcade",
           arcade: {
-            gravity: { y: 200 },
+            gravity: { y: 0 },
             debug: false,
           },
         },
@@ -39,6 +39,8 @@
       let enemy;
       let score = 0;
       let scoreText;
+      var gameOver = false;
+      var alerted = false;
       let game = new Phaser.Game(config);
       let details;
       // let carsList;
@@ -52,7 +54,6 @@
       function preload() {
         this.load.image("road", "assets/road.png");
         this.load.image("roadDetails", "assets/road_details.png");
-        this.load.image("player", "assets/player_car.png");
         //trucks
         this.load.image("blue-truck", "assets/trucks/blue_truck.png");
         this.load.image("dark-truck", "assets/trucks/dark_truck.png");
@@ -77,6 +78,11 @@
         this.load.image("green-compact", "assets/compacts/green_compact.png");
         this.load.image("violet-compact", "assets/compacts/violet_compact.png");
         this.load.image("yellow-compact", "assets/compacts/yellow_compact.png");
+
+        this.load.spritesheet("player", "assets/player_car.png", {
+          frameWidth: 34,
+          frameHeight: 64,
+        });
       }
 
       function create() {
@@ -85,7 +91,7 @@
         //v creates a tileSprite
         this.details = this.add.tileSprite(300, 375, 600, 750, "roadDetails");
         //enemies
-        enemy = this.physics.add.group();
+
         trucks = [
           "blue-truck",
           "dark-truck",
@@ -114,46 +120,92 @@
           "violet-compact",
           "yellow-compact",
         ];
-
+        enemy = this.physics.add.group();
+        this.physics.add.collider(enemy, enemy);
         // smallcarsList = ["zhiguli"];
         //enemy spawner
+        //
+        // enemy.create(
+        //   Phaser.Math.RND.between(100, 350),
+        //   -500,
+        //   Phaser.Math.RND.pick(smallcarsList)
+        // );
+        // if (Phaser.Math.RND.pick(fallingItems) === "ball") {
+        //   score += 10;
+        // }
+        // score += 1;
+        // scoreText.setText("Score: " + score);
         function intervalFunction() {
           setInterval(function () {
-            enemy.create(
-              Phaser.Math.RND.between(10, 590),
-              -500,
-              Phaser.Math.RND.pick(trucks)
-            );
-            // enemy.create(
-            //   Phaser.Math.RND.between(100, 350),
-            //   -500,
-            //   Phaser.Math.RND.pick(smallcarsList)
-            // );
-            // if (Phaser.Math.RND.pick(fallingItems) === "ball") {
-            //   score += 10;
-            // }
-            // score += 1;
-            // scoreText.setText("Score: " + score);
+            enemy
+              .create(
+                Phaser.Math.RND.between(10, 590),
+                -500,
+                Phaser.Math.RND.pick(trucks)
+              )
+              .setVelocity(0, 200);
           }, 2000);
-
+        }
+        function intervalFunction2() {
           setInterval(function () {
-            enemy.create(
-              Phaser.Math.RND.between(10, 590),
-              -500,
-              Phaser.Math.RND.pick(sedans)
-            );
+            enemy
+              .create(
+                Phaser.Math.RND.between(10, 590),
+                -500,
+                Phaser.Math.RND.pick(supercars)
+              )
+              .setVelocity(0, 600);
+          }, 1200);
+        }
+        function intervalFunction3() {
+          setInterval(function () {
+            enemy
+              .create(
+                Phaser.Math.RND.between(10, 590),
+                -500,
+                Phaser.Math.RND.pick(compacts)
+              )
+              .setVelocity(0, 300);
+          }, 600);
+        }
+        function intervalFunction4() {
+          setInterval(function () {
+            enemy
+              .create(
+                Phaser.Math.RND.between(10, 590),
+                -500,
+                Phaser.Math.RND.pick(sedans)
+              )
+              .setVelocity(0, 400);
           }, 900);
         }
         intervalFunction();
+        intervalFunction2();
+        intervalFunction3();
+        intervalFunction4();
+
         //player
-        this.player = this.physics.add.image(300, 500, "player");
+        this.player = this.physics.add.sprite(300, 500, "player");
+        gamer = this.player;
+        gamer.body.setSize(34, 64);
         //player settings
         this.player.setCollideWorldBounds(true);
         //input
         cursors = this.input.keyboard.createCursorKeys();
+        this.physics.add.collider(gamer, enemy, hitEnemy, null, this);
       }
 
       function update() {
+        if (gameOver == true) {
+          if (alerted === false) {
+            //the alert box telling you that game is over and showing your score
+            alert("GAME OVER!\nYour score: " + score);
+            //setting alerted variable to true so this alert appears only once
+            alerted = true;
+            //reloading the page after clicking on "ok"
+            window.location.reload();
+          }
+        }
         //v animates the tileSprite
         this.details.tilePositionY -= 3;
         //move left and right
@@ -185,6 +237,9 @@
         } else {
           this.player.rotation = 0;
         }
+      }
+      function hitEnemy(player, enemy) {
+        gameOver = true;
       }
     </script>
   </body>
