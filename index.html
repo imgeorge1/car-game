@@ -43,6 +43,10 @@
       var alerted = false;
       let game = new Phaser.Game(config);
       let details;
+      let au;
+      let ad;
+      let ar;
+      let al;
       // let carsList;
       let trucks;
       let sedans;
@@ -83,6 +87,12 @@
           frameWidth: 34,
           frameHeight: 64,
         });
+
+        //arrows
+        this.load.image("ar", "assets/ar.png");
+        this.load.image("au", "assets/au.png");
+        this.load.image("al", "assets/al.png");
+        this.load.image("ad", "assets/ad.png");
       }
 
       function create() {
@@ -90,8 +100,17 @@
         this.add.image(300, 400, "road");
         //v creates a tileSprite
         this.details = this.add.tileSprite(300, 375, 600, 750, "roadDetails");
-        //enemies
+        //arrows
+        this.au = this.add.image(100, 650, "au").setDepth(2);
+        this.au
+          .setInteractive()
+          .on("pointerdown", () => this.player.setVelocityY(-100));
 
+        this.add.image(200, 650, "ad").setDepth(2);
+        this.add.image(380, 650, "al").setDepth(2);
+        this.add.image(500, 650, "ar").setDepth(2);
+
+        //enemies
         trucks = [
           "blue-truck",
           "dark-truck",
@@ -250,6 +269,8 @@
         } else {
           this.player.rotation = 0;
         }
+
+        // this.input.on("pointerdown", this.player.setVelocityX(-250))
       }
       function hitEnemy(player, enemy) {
         gameOver = true;
