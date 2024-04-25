@@ -43,10 +43,10 @@
       var alerted = false;
       let game = new Phaser.Game(config);
       let details;
-      let au;
-      let ad;
-      let ar;
-      let al;
+      let au = false;
+      let ad = false;
+      let ar = false;
+      let al = false;
       // let carsList;
       let trucks;
       let sedans;
@@ -104,11 +104,22 @@
         this.au = this.add.image(100, 650, "au").setDepth(2);
         this.au
           .setInteractive()
-          .on("pointerdown", () => this.player.setVelocityY(-100));
+          .on("pointermove", () => this.player.setVelocityY(-100));
 
-        this.add.image(200, 650, "ad").setDepth(2);
-        this.add.image(380, 650, "al").setDepth(2);
-        this.add.image(500, 650, "ar").setDepth(2);
+        this.ad = this.add.image(200, 650, "ad").setDepth(2);
+        this.ad
+          .setInteractive()
+          .on("pointermove", () => this.player.setVelocityY(100));
+
+        this.al = this.add.image(380, 650, "al").setDepth(2);
+        this.al
+          .setInteractive()
+          .on("pointermove", () => this.player.setVelocityX(-250));
+
+        this.ar = this.add.image(500, 650, "ar").setDepth(2);
+        this.ar
+          .setInteractive()
+          .on("pointermove", () => this.player.setVelocityX(250));
 
         //enemies
         trucks = [
