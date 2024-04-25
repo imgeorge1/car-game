@@ -43,10 +43,7 @@
       var alerted = false;
       let game = new Phaser.Game(config);
       let details;
-      let au = false;
-      let ad = false;
-      let ar = false;
-      let al = false;
+
       // let carsList;
       let trucks;
       let sedans;
@@ -87,12 +84,6 @@
           frameWidth: 34,
           frameHeight: 64,
         });
-
-        //arrows
-        this.load.image("ar", "assets/ar.png");
-        this.load.image("au", "assets/au.png");
-        this.load.image("al", "assets/al.png");
-        this.load.image("ad", "assets/ad.png");
       }
 
       function create() {
@@ -100,26 +91,6 @@
         this.add.image(300, 400, "road");
         //v creates a tileSprite
         this.details = this.add.tileSprite(300, 375, 600, 750, "roadDetails");
-        //arrows
-        this.au = this.add.image(100, 650, "au").setDepth(2);
-        this.au
-          .setInteractive()
-          .on("pointermove", () => this.player.setVelocityY(-100));
-
-        this.ad = this.add.image(200, 650, "ad").setDepth(2);
-        this.ad
-          .setInteractive()
-          .on("pointermove", () => this.player.setVelocityY(100));
-
-        this.al = this.add.image(380, 650, "al").setDepth(2);
-        this.al
-          .setInteractive()
-          .on("pointermove", () => this.player.setVelocityX(-250));
-
-        this.ar = this.add.image(500, 650, "ar").setDepth(2);
-        this.ar
-          .setInteractive()
-          .on("pointermove", () => this.player.setVelocityX(250));
 
         //enemies
         trucks = [
@@ -239,10 +210,17 @@
       }
 
       function update() {
+        if (score === 10000) {
+          alert("You Win!");
+        }
         if (gameOver == true) {
           if (alerted === false) {
             //the alert box telling you that game is over and showing your score
-            alert("GAME OVER!\nYour score: " + score);
+            alert(
+              "GAME OVER!\nYour score: " +
+                score +
+                "\nyou need to score 10000 to win"
+            );
             //setting alerted variable to true so this alert appears only once
             alerted = true;
             //reloading the page after clicking on "ok"
