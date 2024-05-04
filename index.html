@@ -79,6 +79,11 @@
         this.load.image("green-compact", "assets/compacts/green_compact.png");
         this.load.image("violet-compact", "assets/compacts/violet_compact.png");
         this.load.image("yellow-compact", "assets/compacts/yellow_compact.png");
+        //gems
+        this.load.image("gem_blue", "assets/gems/gem_blue.png");
+        this.load.image("gem_green", "assets/gems/gem_green.png");
+        this.load.image("gem_purple", "assets/gems/gem_purple.png");
+        this.load.image("gem_red", "assets/gems/gem_red.png");
 
         this.load.spritesheet("player", "assets/player_car.png", {
           frameWidth: 34,
@@ -91,7 +96,7 @@
         this.add.image(300, 400, "road");
         //v creates a tileSprite
         this.details = this.add.tileSprite(300, 375, 600, 750, "roadDetails");
-
+        // this.add.image(400, 400, "gem_green");
         //enemies
         trucks = [
           "blue-truck",
