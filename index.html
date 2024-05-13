@@ -48,6 +48,9 @@
       let spawnGems;
       let randT;
       let boostText;
+      let gamerX;
+      let gamerY;
+      let boostPickUp;
       // let carsList;
       let trucks;
       let sedans;
@@ -135,7 +138,7 @@
         this.physics.add.collider(enemy, enemy);
         //score
         scoreText = this.add.text(16, 16, "Score: 0", {
-          fontSize: "20px",
+          fontSize: "24px",
           fill: "#FF7F27",
         });
         scoreText.setDepth(1);
@@ -199,7 +202,7 @@
         intervalFunction4();
 
         //random time
-        randT = Math.floor(Math.random() * 50000) + 10000;
+        randT = Math.floor(Math.random() * 20000) + 10000;
 
         //gems
         gems = ["gem_blue", "gem_green", "gem_purple", "gem_red"];
@@ -215,47 +218,18 @@
               .create(
                 Phaser.Math.RND.between(10, 590),
                 -100,
-                Phaser.Math.RND.pick(gems),
-                console.log("spawned boost1")
+                Phaser.Math.RND.pick(gems)
               )
               .setVelocity(0, 180);
             gemText();
             randT = Math.floor(Math.random() * 50000) + 20000;
           }, randT);
         }
-        function spawnGems1() {
-          setInterval(function () {
-            powerUp
-              .create(
-                Phaser.Math.RND.between(10, 590),
-                -100,
-                Phaser.Math.RND.pick(gems),
-                console.log("spawned boost2")
-              )
-              .setVelocity(0, 180);
-            randT = Math.floor(Math.random() * 50000) + 20000;
-          }, randT);
-        }
-        function spawnGems2() {
-          setInterval(function () {
-            powerUp
-              .create(
-                Phaser.Math.RND.between(10, 590),
-                -100,
-                Phaser.Math.RND.pick(gems),
-                console.log("spawned boost3")
-              )
-              .setVelocity(0, 180);
-            randT = Math.floor(Math.random() * 50000) + 20000;
-          }, randT);
-        }
         //call spawn gem function
         spawnGems();
-        spawnGems1();
-        spawnGems2();
         //booster spawn text
         boostText = this.add
-          .text(150, 360, "!BOOSTERS SPAWNED!", {
+          .text(150, 360, "BOOSTER SPAWNED", {
             fontFamily: "Sansita",
             fontSize: "30px",
             color: "#FF7F27",
@@ -321,9 +295,9 @@
 
         if (cursors.up.isDown) {
           //go up
-          this.player.setVelocityY(-100);
+          this.player.setVelocityY(-150);
         } else if (cursors.down.isDown) {
-          this.player.setVelocityY(100);
+          this.player.setVelocityY(150);
         } else {
           this.player.setVelocityY(0);
         }
@@ -344,7 +318,12 @@
         score += 500;
         scoreText.setText("Score: " + score);
         powerUp.destroy();
-        console.log("+500");
+        boostPickUp = this.add.text(gamer.x - 20, gamer.y - 50, "+500", {
+          fontSize: "16px",
+        });
+        setInterval(function () {
+          boostPickUp.destroy();
+        }, 2000);
       }
     </script>
   </body>
