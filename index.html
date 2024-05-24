@@ -96,6 +96,8 @@
           frameWidth: 34,
           frameHeight: 64,
         });
+
+        this.load.image("explosion", "assets/explode.png");
       }
 
       function create() {
@@ -312,7 +314,11 @@
         // this.input.on("pointerdown", this.player.setVelocityX(-250))
       }
       function hitEnemy(player, enemy) {
-        gameOver = true;
+        // enemy.setVelocity(0);
+        setInterval(function () {
+          gameOver = true;
+        }, 5);
+        this.add.image(gamer.x, gamer.y, "explosion");
       }
       function boost(player, powerUp) {
         score += 500;
