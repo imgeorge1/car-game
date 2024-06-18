@@ -44,6 +44,9 @@
       let game = new Phaser.Game(config);
       let details;
       let gems;
+      let chooseExplosion;
+      let chooseExplosionSound;
+      let explosion_sound;
       let powerUp;
       let spawnGems;
       let randT;
@@ -91,13 +94,21 @@
         this.load.image("gem_green", "assets/gems/gem_green.png");
         this.load.image("gem_purple", "assets/gems/gem_purple.png");
         this.load.image("gem_red", "assets/gems/gem_red.png");
-
         this.load.spritesheet("player", "assets/player_car.png", {
           frameWidth: 34,
           frameHeight: 64,
         });
-
-        this.load.image("explosion", "assets/explode.png");
+        //explosions
+        this.load.image("explode", "assets/explode.png");
+        this.load.image("explode1", "assets/explode1.png");
+        this.load.image("explode2", "assets/explode2.png");
+        //Audio
+        this.load.audio("SFXexplode1", "assets/Audio/explosion1.wav");
+        this.load.audio("SFXexplode2", "assets/Audio/explosion2.wav");
+        this.load.audio("SFXexplode3", "assets/Audio/explosion3.wav");
+        this.load.audio("SFXexplode4", "assets/Audio/explosion4.wav");
+        this.load.audio("SFXexplode5", "assets/Audio/explosion5.wav");
+        this.load.audio("SFXexplode7", "assets/Audio/explosion7.wav");
       }
 
       function create() {
@@ -245,7 +256,16 @@
           }, 2000);
           boostText.alpha = 0.8;
         }
-
+        //explosions
+        explosion = ["explode", "explode1", "explode2"];
+        explosion_sounds = [
+          "SFXexplode1",
+          "SFXexplode2",
+          "SFXexplode3",
+          "SFXexplode4",
+          "SFXexplode5",
+          "SFXexplode7",
+        ];
         //player
         this.player = this.physics.add.sprite(300, 500, "player");
         gamer = this.player;
@@ -317,8 +337,12 @@
         // enemy.setVelocity(0);
         setInterval(function () {
           gameOver = true;
-        }, 5);
-        this.add.image(gamer.x, gamer.y, "explosion");
+        }, 1);
+        this.add.image(gamer.x, gamer.y, Phaser.Math.RND.pick(explosion));
+        explosion_sound = this.sound.add(
+          Phaser.Math.RND.pick(explosion_sounds)
+        );
+        explosion_sound.play();
       }
       function boost(player, powerUp) {
         score += 500;
