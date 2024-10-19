@@ -304,15 +304,28 @@
         //move left and right
         if (cursors.left.isDown) {
           //go left
+          if(this.player.rotation >= 0){
+            this.player.rotation = 0;
+          }
+          if (this.player.rotation >= -0.15){
+            this.player.rotation -= .01
+          }
           this.player.setVelocityX(-250);
           this.player.setVelocityY(0);
         } else if (cursors.right.isDown) {
           //go right
+          if(this.player.rotation <= 0){
+            this.player.rotation = 0;
+          }
+          if (this.player.rotation <= 0.15){
+            this.player.rotation += .01
+          }
           this.player.setVelocityX(250);
           this.player.setVelocityY(0);
         } else {
           //do nothing
           this.player.setVelocityX(0);
+          this.player.rotation = 0;
         }
 
         if (cursors.up.isDown) {
@@ -324,12 +337,7 @@
           this.player.setVelocityY(0);
         }
 
-        if (cursors.up.isDown && cursors.down.isDown) {
-          this.player.rotation -= 0.2;
-          this.player.setVelocityY(0);
-        } else {
-          this.player.rotation = 0;
-        }
+        
 
         // this.input.on("pointerdown", this.player.setVelocityX(-250))
       }
