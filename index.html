@@ -33,7 +33,7 @@
         },
       };
 
-      //variables
+      //variable
       let player;
       let cursors;
       let enemy;
@@ -54,6 +54,8 @@
       let gamerX;
       let gamerY;
       let boostPickUp;
+      let canShoot = true; // Variable to track if shooting is allowed
+      let shootingInterval;
       // let carsList;
       let trucks;
       let sedans;
@@ -109,6 +111,8 @@
         this.load.audio("SFXexplode4", "assets/Audio/explosion4.wav");
         this.load.audio("SFXexplode5", "assets/Audio/explosion5.wav");
         this.load.audio("SFXexplode7", "assets/Audio/explosion7.wav");
+        //laser
+        this.load.image("laser", "assets/laser.png")
       }
 
       function create() {
@@ -277,6 +281,43 @@
         //game colliders
         this.physics.add.collider(gamer, enemy, hitEnemy, null, this);
         this.physics.add.collider(gamer, powerUp, boost, null, this);
+
+        //gamepad input
+
+        let gamepad;
+
+        window.addEventListener("gamepadconnected", (event) => {
+            console.log("Gamepad connected:", event.gamepad.id);
+            requestAnimationFrame(gameLoop); // Start the loop after connection
+            
+        });
+        function logGamepadInput() {
+            const gamepads = navigator.getGamepads();
+            if (gamepads[0]) {
+                gamepad = gamepads[0];
+            }
+        }
+        function gameLoop() {
+            logGamepadInput();
+            requestAnimationFrame(gameLoop);
+        }
+        // Check for gamepad disconnection
+        window.addEventListener("gamepaddisconnected", (event) => {
+            console.log("Gamepad disconnected:", event.gamepad.id);
+        });
+
+
+
+
+      }
+
+      function startShootingCooldown() {
+        clearInterval(shootingInterval);
+
+        shootingInterval = setInterval(function () {
+          canShoot = true; 
+          clearInterval(shootingInterval);
+        }, 200); 
       }
 
       function update() {
@@ -337,10 +378,64 @@
           this.player.setVelocityY(0);
         }
 
-        
+
+
+
+        //gamepad
+
+        const gamepads = navigator.getGamepads();
+        if (gamepads[0]) {
+            const gamepad = gamepads[0];
+
+            // Log all buttons that are pressed
+            gamepad.buttons.forEach((button, index) => {
+                if (button.pressed) {
+                    switch (index) {
+                        case 15: // Right
+                            this.player.rotation += .1
+                            console.log("right");
+                            this.player.setVelocityX(250);
+                            break;
+                        case 14: // Left
+                            this.player.rotation -= .1
+                            console.log("left");
+                            this.player.setVelocityX(-250);
+                            break;
+                        case 13: // Down
+                            console.log("down");
+                            this.player.setVelocityY(150)
+                            break;
+                        case 12: // Up
+                            console.log("up");
+                            this.player.setVelocityY(-150)
+                            break;
+                        case 5: //shoot
+                            if (canShoot) {
+                              // Create the laser
+                              let shot = this.physics.add.image(gamer.x, gamer.y, "laser").setRotation(1.57);
+                              shot.setVelocityY(-300); 
+                              canShoot = false;
+                              startShootingCooldown();
+                            }
+                            break;
+                        default:
+                            this.player.setVelocityX(0);
+                            this.player.rotation = 0;
+                            break;
+                    }
+                }
+          });
+
+          // Stop movement if no buttons are pressed
+          if (!gamepad.buttons.some(button => button.pressed)) {
+              this.player.setVelocityX(0); // Stop movement
+          }
+      }
+
 
         // this.input.on("pointerdown", this.player.setVelocityX(-250))
       }
+
       function hitEnemy(player, enemy) {
         // enemy.setVelocity(0);
         setInterval(function () {
@@ -362,6 +457,14 @@
         setInterval(function () {
           boostPickUp.destroy();
         }, 2000);
+
+
+        enemy.getChildren().forEach(function (child) {
+          child.destroy();
+        });
+
+          
+      
       }
     </script>
   </body>
