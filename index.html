@@ -56,6 +56,8 @@
       let boostPickUp;
       let canShoot = true; // Variable to track if shooting is allowed
       let shootingInterval;
+      let bullets = 2
+      let ammoText
       // let carsList;
       let trucks;
       let sedans;
@@ -159,6 +161,11 @@
           fill: "#FF7F27",
         });
         scoreText.setDepth(1);
+        ammoText = this.add.text(16, 48, "ammo: 2",{
+          fontSize: "24px",
+          fill: "#FF7F27",
+        })
+        ammoText.setText("ammo: " + bullets);
         function intervalFunction() {
           setInterval(function () {
             enemy
@@ -240,7 +247,7 @@
               .setVelocity(0, 180);
             gemText();
             randT = Math.floor(Math.random() * 50000) + 20000;
-          }, randT);
+          }, 2000);
         }
         //call spawn gem function
         spawnGems();
@@ -307,12 +314,15 @@
         });
 
 
-
+        //lasers
+        lasers = this.physics.add.group();
 
       }
 
+
+      //shooting automatic
       function startShootingCooldown() {
-        clearInterval(shootingInterval);
+        // clearInterval(shootingInterval);
 
         shootingInterval = setInterval(function () {
           canShoot = true; 
@@ -410,12 +420,18 @@
                             this.player.setVelocityY(-150)
                             break;
                         case 5: //shoot
-                            if (canShoot) {
+                            if (canShoot && bullets > 0) {
                               // Create the laser
                               let shot = this.physics.add.image(gamer.x, gamer.y, "laser").setRotation(1.57);
-                              shot.setVelocityY(-300); 
+                               
+                              lasers.add(shot)
+                              shot.setVelocityY(-769);
+                              bullets -= 1
+                              ammoText.setText("ammo: " + bullets);
                               canShoot = false;
                               startShootingCooldown();
+                            }else if(bullets === 0){
+                              canShoot = false
                             }
                             break;
                         default:
@@ -431,9 +447,15 @@
               this.player.setVelocityX(0); // Stop movement
           }
       }
+      this.physics.overlap(lasers, enemy, shotEnemy, null, this);
 
 
         // this.input.on("pointerdown", this.player.setVelocityX(-250))
+      }
+
+      function shotEnemy(laser, enemy) {
+        laser.destroy(); // Destroy the laser
+        enemy.destroy(); // Destroy the enemy
       }
 
       function hitEnemy(player, enemy) {
@@ -447,6 +469,7 @@
         );
         explosion_sound.play();
       }
+      
       function boost(player, powerUp) {
         score += 500;
         scoreText.setText("Score: " + score);
@@ -457,13 +480,14 @@
         setInterval(function () {
           boostPickUp.destroy();
         }, 2000);
-
+        canShoot = true; 
 
         enemy.getChildren().forEach(function (child) {
           child.destroy();
         });
-
+        bullets += 2
           
+        ammoText.setText("ammo: " + bullets);
       
       }
     </script>
