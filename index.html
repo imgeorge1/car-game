@@ -490,26 +490,17 @@
         explosion_sound.play();
       }
       
-      function boost(player, powerUp) {
-        score += 500;
-        scoreText.setText("Score: " + score);
-        powerUp.destroy();
-        boostPickUp = this.add.text(gamer.x - 20, gamer.y - 50, "+500", {
-          fontSize: "16px",
-        });
-        setInterval(function () {
-          boostPickUp.destroy();
-        }, 2000);
-        canShoot = true; 
-
-        enemy.getChildren().forEach(function (child) {
-          child.destroy();
-        });
-        bullets += 3
-          
-        ammoText.setText("ammo: " + bullets);
-      
+      function deleteAllEnemies() {
+        enemy.clear(true, true); // This will destroy all enemy objects in the group
       }
+
+      function boost(player, powerUp) {
+        powerUp.destroy(); // Destroy the power-up that the player collected
+        deleteAllEnemies(); // Call the function to delete all enemies
+        bullets += 2; // Refill some bullets on boost pickup
+        ammoText.setText("ammo: " + bullets); // Update ammo text
+      }
+
     </script>
   </body>
 </html>
